@@ -135,7 +135,7 @@ int main(int argc, char **argv)
                     if(array_ativos[0] == 1)
                         MPI_Send(&array_ativos[0], numprocs, MPI_INT, 2, TAG_ELEICAO, MPI_COMM_WORLD);
                     else
-                        MPI_Send(&array_ativos[0], numprocs, MPI_INT, 2, TAG_ELEICAO, MPI_COMM_WORLD);
+                        MPI_Send(&array_ativos[0], numprocs, MPI_INT, 1, TAG_ELEICAO, MPI_COMM_WORLD);
                 }
                 else
                 {
@@ -184,9 +184,12 @@ int main(int argc, char **argv)
         MPI_Recv(&buffer, 1, MPI_INT, p, TAG_CONTROLE, MPI_COMM_WORLD, &status);
         printf("Eleicao acabou e o novo coordenador é %d\n", buffer);
 
-        printf("Processo de controle enviando para %d para disparar nova eleição com todos os processos ativos",p);
+        printf("Processo de controle enviando para %d para disparar nova eleição com todos os processos ativos\n",p);
         buffer = 0;
         MPI_Send(&buffer, 1, MPI_INT, p, TAG_CONTROLE, MPI_COMM_WORLD);
+
+        MPI_Recv(&buffer, 1, MPI_INT, p, TAG_CONTROLE, MPI_COMM_WORLD, &status);
+        printf("Eleicao acabou e o novo coordenador é %d\n", buffer);
     }
 
     MPI_Finalize();
